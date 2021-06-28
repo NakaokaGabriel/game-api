@@ -4,7 +4,7 @@ import Navigation from '../../components/Navigation';
 import GameList from '../../components/GameList';
 
 import { api } from '../../services/api';
-import { Genres, ParentPlataforms } from '../../types/Games';
+import { Genres, Plataforms } from '../../types/Games';
 
 export type GameProps = {
   id: number;
@@ -13,7 +13,7 @@ export type GameProps = {
   metacritic: number;
   dominant_color: string;
   background_image: string;
-  parent_platforms: ParentPlataforms[];
+  parent_platforms: Plataforms[];
 }
 
 export type GameInfoProps = {
