@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
+import GameList from '../../components/GameList';
+
 import { api } from '../../services/api';
 
 import { Genres, ParentPlataforms } from '../../types/Games';
 
-type GameProps = {
+export type GameProps = {
   id: number;
   name: string;
   genres: Genres[];
@@ -23,7 +25,7 @@ type GameInfoProps = {
 const HomePage = () => {
   const [games, setGames] = useState<GameProps[]>([]);
   const [gameInfo, setGameInfo] = useState<GameInfoProps>();
-  const [gamePage, setGamePage] = useState(2);
+  const [gamePage, setGamePage] = useState(1);
 
   useEffect(() => {
     async function loadGames() {
@@ -89,13 +91,8 @@ const HomePage = () => {
         </label>
       </div>
 
-      <div className="grid grid-cols-4 gap-3 mt-20">
-        {games.map((game) => (
-          <div key={game.id}>
-            {game.name}
-          </div>
-        ))}
-      </div>
+      <GameList games={games} />
+
       {
         gameInfo?.prev && <button type="button" onClick={handlePreviousPage}>Previous Page</button>
       }
