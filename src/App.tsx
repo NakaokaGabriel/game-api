@@ -11,7 +11,7 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-900 h-screen overflow-y-auto text-gray-50">
+    <div className="bg-white dark:bg-gray-900 h-screen overflow-y-auto text-gray-50 font-body">
       <Routes />
     </div>
   );
