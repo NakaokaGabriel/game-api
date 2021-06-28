@@ -10,7 +10,7 @@ type GameListProps = {
   setGamePage: Dispatch<SetStateAction<number>>;
 }
 
-export default function GameList({ games, gameInfo, setGamePage }: GameListProps) {
+const GameList = ({ games, gameInfo, setGamePage }: GameListProps) => {
   const handlePreviousPage = useCallback(
     () => {
       const getNextPage = Number(gameInfo?.next?.split('page=')[1]);
@@ -86,3 +86,5 @@ export default function GameList({ games, gameInfo, setGamePage }: GameListProps
     </div>
   )
 };
+
+export default GameList;

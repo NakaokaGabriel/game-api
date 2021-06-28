@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaSearch } from 'react-icons/fa';
 
-export default function Navigation() {
+const Navigation = () => {
   return (
     <div className="my-6 md:flex justify-between align-center">
       <div>
@@ -35,4 +35,6 @@ export default function Navigation() {
       </label>
     </div>
   )
-}
+};
+
+export default Navigation;

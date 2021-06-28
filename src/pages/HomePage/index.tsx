@@ -30,7 +30,7 @@ const HomePage = () => {
     async function loadGames() {
       const response = await api.get('/games', {
         params: {
-          page: gamePage
+          page: gamePage,
         }
       });
 
