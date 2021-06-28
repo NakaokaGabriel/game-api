@@ -14,7 +14,7 @@ export default function GameList({ games }: GameListProps) {
 
       <div className="md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sl gap-5">
         {games.map((game) => (
-          <Link to="/game" key={game.id} className="block rounded relative overflow-hidden mx-1 md:mx-0 my-10 md:my-0">
+          <Link to="/game" key={game.id} className="block rounded relative overflow-hidden my-10 md:my-0">
             <img
               src={game.background_image}
               alt={game.name}
