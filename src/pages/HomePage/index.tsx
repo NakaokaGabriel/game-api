@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Navigation from '../../components/Navigation';
 import GameList from '../../components/GameList';
 
 import { api } from '../../services/api';
-
 import { Genres, ParentPlataforms } from '../../types/Games';
 
 export type GameProps = {
@@ -17,7 +16,7 @@ export type GameProps = {
   parent_platforms: ParentPlataforms[];
 }
 
-type GameInfoProps = {
+export type GameInfoProps = {
   prev: string | undefined;
   next: string | undefined;
 }
@@ -45,41 +44,10 @@ const HomePage = () => {
     loadGames();
   }, [gamePage]);
 
-  const handlePreviousPage = useCallback(
-    () => {
-      const getNextPage = Number(gameInfo?.next?.split('page=')[1]);
-
-      console.log(getNextPage);
-
-      if (gameInfo?.prev) {
-        setGamePage(getNextPage - 2);
-      }
-    },
-    [gameInfo],
-  );
-
-  const handleNextPage = useCallback(
-    () => {
-      const getNextPage = Number(gameInfo?.next?.split('page=')[1]);
-
-      if (gameInfo?.next) {
-        setGamePage(getNextPage);
-      }
-    },
-    [gameInfo?.next],
-  );
-
   return (
     <div className="container mx-auto px-2">
       <Navigation />
-      <GameList games={games} />
-
-      {
-        gameInfo?.prev && <button type="button" onClick={handlePreviousPage}>Previous Page</button>
-      }
-      {
-        gameInfo?.next && <button type="button" onClick={handleNextPage}>Next Page</button>
-      }
+      <GameList games={games} gameInfo={gameInfo} setGamePage={setGamePage} />
     </div>
   );
 }
