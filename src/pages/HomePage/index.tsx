@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
 
+import Navigation from '../../components/Navigation';
 import GameList from '../../components/GameList';
 
 import { api } from '../../services/api';
@@ -71,26 +71,7 @@ const HomePage = () => {
 
   return (
     <div className="container mx-auto">
-      <div className="my-6 md:flex justify-between align-center">
-        <div>
-          <h1 className="font-bold text-3xl">API Games</h1>
-          <p className="mt-2">Searching your favorite game</p>
-        </div>
-
-        <label htmlFor="search" className="block w-full md:w-4/12 mt-6 relative">
-          <input 
-            className="block w-full"
-            type="text"
-            placeholder="text here" 
-            id="search" 
-            name="search" 
-          />
-          <div className="absolute top-0 left-0">
-            <FaSearch color="#000" />
-          </div>
-        </label>
-      </div>
-
+      <Navigation />
       <GameList games={games} />
 
       {
