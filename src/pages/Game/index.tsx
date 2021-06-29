@@ -5,7 +5,7 @@ import { useParams, Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
 
 import { api } from '../../services/api';
-import { Developers, Genres, Plataforms } from '../../types/Games';
+import { Developers, Genres, Platforms } from '../../types/Games';
 
 type ParamsGameProps = {
   id: string;
@@ -13,9 +13,10 @@ type ParamsGameProps = {
 
 type GameDataProps = {
   name: string;
+  description_raw: string;
   background_image: string;
   genres: Genres[];
-  plataforms: Plataforms[];
+  platforms: Platforms[];
   developers: Developers[];
 }
 
@@ -25,18 +26,22 @@ const Game = () => {
   const [gameData, setGameData] = useState<GameDataProps>();
 
   useEffect(() => {
-    api.get(`/games/${id}`)
-      .then((response) => {
-        console.log(response.data)
-        setGameData(response.data)
-      });
+    async function loadGame() {
+      const response = await api.get(`/games/${id}`);
+
+      console.log(response.data);
+
+      setGameData(response.data)
+    }
+
+    loadGame();
   }, [id]);
 
   return (
-    <div className="container mx-auto px-2">
+    <div className="container mx-auto my-6 px-2">
       <Navigation />
 
-      <div className="mt-20">
+      <div className="mt-16 mb-4 inline-block">
         <Link to="/" className="flex items-center">
           <div className="bg-gray-700 p-2 rounded-full flex items-center justify-center">
             <FaChevronLeft color="#fff" />
@@ -45,7 +50,7 @@ const Game = () => {
         </Link>
       </div>
 
-      <div className="block rounded relative overflow-hidden mt-3 h-96">
+      <div className="block rounded relative overflow-hidden mt-3 h-auto md:h-96">
         <img
           src={gameData?.background_image}
           alt={gameData?.name}
@@ -57,6 +62,45 @@ const Game = () => {
           <p className="ml-3 font-bold drop-shadow-2xl">
             {gameData?.name}
           </p>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row md gap-4 mt-16">
+        <div className="order-2 md:order-1 md:w-8/12">
+          <h3 className="font-bold text-xl mb-3">Description</h3>
+          <p className="text-md">{gameData?.description_raw}</p>
+        </div>
+
+        <div className="order-1 md:order-2 md:w-4/12 h-full bg-gray-800 p-6 rounded">
+          <div className="mb-5">
+            <h3 className="font-bold text-xl mb-3">Platforms</h3>
+
+            <div className="flex flex-wrap gap-4">
+              {gameData?.platforms.map((platform) => (
+                <p key={platform.platform.id}>{platform.platform.name}</p>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <h3 className="font-bold text-xl mb-3">Genres</h3>
+
+            <div className="flex flex-wrap gap-4">
+              {gameData?.genres.map((genre) => (
+                <p key={genre.id}>{genre.name}</p>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <h3 className="font-bold text-xl mb-3">Developers</h3>
+
+            <div className="flex flex-wrap gap-4">
+              {gameData?.developers.map((developer) => (
+                <p key={developer.id}>{developer.name}</p>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

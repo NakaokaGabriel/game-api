@@ -4,8 +4,8 @@ export type Genres = {
   name: string;
 }
 
-export type Plataforms = {
-  plataform: {
+export type Platforms = {
+  platform: {
     id: number;
     name: string;
   }
