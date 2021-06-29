@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { FaChevronLeft } from 'react-icons/fa';
 import { useParams, Link } from 'react-router-dom';
 
-import Navigation from '../../components/Navigation';
 import Loading from '../../components/Loading';
 
 import { api } from '../../services/api';
@@ -47,9 +46,7 @@ const Game = () => {
 
   return (
     <div className="container mx-auto my-6 px-2">
-      <Navigation />
-
-      <div className="mt-16 mb-4 inline-block">
+      <div className="mt-3 mb-4 inline-block">
         <Link to="/" className="flex items-center">
           <div className="bg-gray-700 p-2 rounded-full flex items-center justify-center">
             <FaChevronLeft color="#fff" />
@@ -62,10 +59,11 @@ const Game = () => {
         <Loading />
       ) : (
         <>
-          <div className={`block rounded relative overflow-hidden mt-3 h-auto md:h-96 ${loading && 'animate-pulse'}`}>
+          <div className={`block rounded relative overflow-hidden mt-3 h-auto md:h-96`}>
             <img
               src={gameData?.background_image}
               alt={gameData?.name}
+              className="w-full"
             />
 
             <div className="absolute bottom-0 left-0 w-full h-16 backdrop-filter backdrop-blur-sm rounded-none" />

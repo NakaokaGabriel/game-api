@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import './styles/tailwind.css';
 
+import SearchProvider from './context/Search';
 import Routes from './routes';
 
 function App() {
@@ -11,9 +12,11 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-900 h-screen overflow-y-auto text-gray-50 font-body">
-      <Routes />
-    </div>
+    <SearchProvider>
+      <div className="bg-white dark:bg-gray-900 h-screen overflow-y-auto text-gray-50 font-body">
+        <Routes />
+      </div>
+    </SearchProvider>
   );
 }
 
