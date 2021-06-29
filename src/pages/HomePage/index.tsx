@@ -6,6 +6,7 @@ import GameList from '../../components/GameList';
 import { api } from '../../services/api';
 import { Genres, Platforms } from '../../types/Games';
 import { useLoading } from '../../hooks/useLoading';
+import { useSearch } from '../../hooks/useSearch';
 
 export type GameProps = {
   id: number;
@@ -28,6 +29,7 @@ const HomePage = () => {
   const [gamePage, setGamePage] = useState(1);
 
   const { loading, setLoading } = useLoading();
+  const { search } = useSearch();
 
   useEffect(() => {
     async function loadGames() {
@@ -36,6 +38,7 @@ const HomePage = () => {
         const response = await api.get('/games', {
           params: {
             page: gamePage,
+            search
           }
         });
   
@@ -51,7 +54,7 @@ const HomePage = () => {
     }
 
     loadGames();
-  }, [gamePage, setLoading]);
+  }, [gamePage, setLoading, search]);
 
   return (
     <div className="container mx-auto px-2">
