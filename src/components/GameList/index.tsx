@@ -66,7 +66,7 @@ const GameList = ({ games, gameInfo, setGamePage }: GameListProps) => {
 
       <div className="md:grid md:grid-cols-3 lg:grid-cols-4 sl gap-5">
         {games.map((game) => (
-          <Link to="/game" key={game.id} className="block rounded relative overflow-hidden my-10 md:my-0">
+          <Link to={`/game/${game.id}`} key={game.id} className="block rounded relative overflow-hidden my-10 md:my-0">
             <img
               src={game.background_image}
               alt={game.name}
