@@ -5,6 +5,7 @@ import GameList from '../../components/GameList';
 
 import { api } from '../../services/api';
 import { Genres, Platforms } from '../../types/Games';
+import { useLoading } from '../../hooks/useLoading';
 
 export type GameProps = {
   id: number;
@@ -26,28 +27,36 @@ const HomePage = () => {
   const [gameInfo, setGameInfo] = useState<GameInfoProps>();
   const [gamePage, setGamePage] = useState(1);
 
+  const { loading, setLoading } = useLoading();
+
   useEffect(() => {
     async function loadGames() {
-      const response = await api.get('/games', {
-        params: {
-          page: gamePage,
-        }
-      });
-
-      setGames(response.data.results);
-      setGameInfo({
-        prev: response.data.previous,
-        next: response.data.next
-      });
+      setLoading(true);
+      try {
+        const response = await api.get('/games', {
+          params: {
+            page: gamePage,
+          }
+        });
+  
+        setGames(response.data.results);
+        setGameInfo({
+          prev: response.data.previous,
+          next: response.data.next
+        });
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
     }
 
     loadGames();
-  }, [gamePage]);
+  }, [gamePage, setLoading]);
 
   return (
     <div className="container mx-auto px-2">
       <Navigation />
-      <GameList games={games} gameInfo={gameInfo} setGamePage={setGamePage} />
+      <GameList games={games} gameInfo={gameInfo} setGamePage={setGamePage} loading={loading} />
     </div>
   );
 }

@@ -3,9 +3,11 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { useParams, Link } from 'react-router-dom';
 
 import Navigation from '../../components/Navigation';
+import Loading from '../../components/Loading';
 
 import { api } from '../../services/api';
 import { Developers, Genres, Platforms } from '../../types/Games';
+import { useLoading } from '../../hooks/useLoading';
 
 type ParamsGameProps = {
   id: string;
@@ -24,18 +26,24 @@ const Game = () => {
   const { id } = useParams<ParamsGameProps>();
 
   const [gameData, setGameData] = useState<GameDataProps>();
+  const { loading, setLoading } = useLoading();
 
   useEffect(() => {
     async function loadGame() {
-      const response = await api.get(`/games/${id}`);
+      setLoading(true);
 
-      console.log(response.data);
+      try {
+        const response = await api.get(`/games/${id}`);
 
-      setGameData(response.data)
+        setGameData(response.data);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
     }
 
     loadGame();
-  }, [id]);
+  }, [id, setLoading]);
 
   return (
     <div className="container mx-auto my-6 px-2">
@@ -50,60 +58,66 @@ const Game = () => {
         </Link>
       </div>
 
-      <div className="block rounded relative overflow-hidden mt-3 h-auto md:h-96">
-        <img
-          src={gameData?.background_image}
-          alt={gameData?.name}
-        />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className={`block rounded relative overflow-hidden mt-3 h-auto md:h-96 ${loading && 'animate-pulse'}`}>
+            <img
+              src={gameData?.background_image}
+              alt={gameData?.name}
+            />
 
-        <div className="absolute bottom-0 left-0 w-full h-16 backdrop-filter backdrop-blur-sm rounded-none" />
+            <div className="absolute bottom-0 left-0 w-full h-16 backdrop-filter backdrop-blur-sm rounded-none" />
 
-        <div className="absolute bottom-0 left-0 w-full h-16 bg-gray-900 bg-opacity-70 flex items-center">
-          <p className="ml-3 font-bold drop-shadow-2xl">
-            {gameData?.name}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex flex-col md:flex-row md gap-4 mt-16">
-        <div className="order-2 md:order-1 md:w-8/12">
-          <h3 className="font-bold text-xl mb-3">Description</h3>
-          <p className="text-md">{gameData?.description_raw}</p>
-        </div>
-
-        <div className="order-1 md:order-2 md:w-4/12 h-full bg-gray-800 p-6 rounded">
-          <div className="mb-5">
-            <h3 className="font-bold text-xl mb-3">Platforms</h3>
-
-            <div className="flex flex-wrap gap-4">
-              {gameData?.platforms.map((platform) => (
-                <p key={platform.platform.id}>{platform.platform.name}</p>
-              ))}
+            <div className="absolute bottom-0 left-0 w-full h-16 bg-gray-900 bg-opacity-70 flex items-center">
+              <p className="ml-3 font-bold drop-shadow-2xl">
+                {gameData?.name}
+              </p>
             </div>
           </div>
 
-          <div className="mb-5">
-            <h3 className="font-bold text-xl mb-3">Genres</h3>
+          <div className="flex flex-col md:flex-row md gap-4 mt-16">
+            <div className="order-2 md:order-1 md:w-8/12">
+              <h3 className="font-bold text-xl mb-3">Description</h3>
+              <p className="text-md">{gameData?.description_raw}</p>
+            </div>
 
-            <div className="flex flex-wrap gap-4">
-              {gameData?.genres.map((genre) => (
-                <p key={genre.id}>{genre.name}</p>
-              ))}
+            <div className="order-1 md:order-2 md:w-4/12 h-full bg-gray-800 p-6 rounded">
+              <div className="mb-5">
+                <h3 className="font-bold text-xl mb-3">Platforms</h3>
+
+                <div className="flex flex-wrap gap-4">
+                  {gameData?.platforms.map((platform) => (
+                    <p key={platform.platform.id}>{platform.platform.name}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-5">
+                <h3 className="font-bold text-xl mb-3">Genres</h3>
+
+                <div className="flex flex-wrap gap-4">
+                  {gameData?.genres.map((genre) => (
+                    <p key={genre.id}>{genre.name}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-5">
+                <h3 className="font-bold text-xl mb-3">Developers</h3>
+
+                <div className="flex flex-wrap gap-4">
+                  {gameData?.developers.map((developer) => (
+                    <p key={developer.id}>{developer.name}</p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="mb-5">
-            <h3 className="font-bold text-xl mb-3">Developers</h3>
-
-            <div className="flex flex-wrap gap-4">
-              {gameData?.developers.map((developer) => (
-                <p key={developer.id}>{developer.name}</p>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </>
+      )}
+    </div >
   )
 }
 
